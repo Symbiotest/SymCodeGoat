@@ -1,0 +1,42 @@
+// Real Vulnerability Examples for TYPESCRIPT
+
+// Rule ID: 1,687 - Missing Authentication for Critical Function
+// Description: The CodeBuild project is configured to have a public URL, making its build results, logs, and artifacts accessible to anyone without authentication. This exposes sensitive project information to the public, including past builds.
+// TODO: Provide actual vulnerable code
+
+// Rule ID: 1,688 - Missing Authentication for Critical Function
+// Description: Granting public access to an S3 bucket using the grantPublicAccess method makes all objects in the bucket accessible to anyone on the internet. This bypasses authentication controls and exposes data to unauthorized users.
+// TODO: Provide actual vulnerable code
+
+// Rule ID: 1,689 - Missing Encryption of Sensitive Data
+// Description: An SQS queue is being created in AWS CDK without enabling encryption at rest. This means any data stored in the queue is not protected and could be read in plaintext if accessed.
+// TODO: Provide actual vulnerable code
+
+// Rule ID: 1,690 - Missing Encryption of Sensitive Data
+// Description: The S3 Bucket is being created without enabling server-side encryption. This means data stored in the bucket is not automatically encrypted at rest, leaving it unprotected.
+// TODO: Provide actual vulnerable code
+
+// Rule ID: 1,691 - Cleartext Transmission of Sensitive Information
+// Description: The S3 bucket is created without enforcing SSL connections ('enforceSSL' is not set to true), allowing clients to access the bucket over unencrypted HTTP. This exposes any data transmitted to or from the bucket to interception.
+// TODO: Provide actual vulnerable code
+
+// Rule ID: 1,692 - Permissive List of Allowed Inputs
+// Description: The CORS domain regular expression uses an unescaped '.' character, which matches any character instead of just a literal dot. This can unintentionally allow requests from unauthorized or unexpected origins.
+// TODO: Provide actual vulnerable code
+
+// Rule ID: 1,701 - URL Redirection to Untrusted Site ('Open Redirect')
+// Description: The code uses untrusted user input directly in the URL parameter when redirecting in a NestJS controller. This allows attackers to control the destination of the redirect, leading to an Open Redirect vulnerability.
+// TODO: Provide actual vulnerable code
+
+// Rule ID: 1,702 - Permissive List of Allowed Inputs
+// Description: The application is configured to allow any website to access its resources by setting the Access-Control-Allow-Origin header to '*'. This disables the browser's Same Origin Policy protections and makes your API accessible from any domain.
+// TODO: Provide actual vulnerable code
+
+// Rule ID: 1,703 - Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
+// Description: Setting the 'X-XSS-Protection' HTTP header to '0' disables the browser’s built-in XSS filter, making the application more vulnerable to Cross-Site Scripting (XSS) attacks. This weakens an important layer of browser-side defense against malicious scripts.
+// TODO: Provide actual vulnerable code
+
+// Rule ID: 1,704 - Improper Neutralization of Input During Web Page Generation ('Cross-site Scripting')
+// Description: Using Angular's bypassSecurityTrust methods (like bypassSecurityTrustHtml or bypassSecurityTrustUrl) on data from users can allow untrusted input to be treated as safe, bypassing Angular’s built-in protections. This creates a risk of injecting malicious content directly into your app.
+// TODO: Provide actual vulnerable code
+

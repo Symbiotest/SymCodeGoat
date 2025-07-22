@@ -1,0 +1,22 @@
+// Real Vulnerability Examples for CLOJURE
+
+// Rule ID: 1,682 - Deserialization of Untrusted Data
+// Description: Using Clojure's core read-string function to process untrusted input is dangerous because it can execute arbitrary code during deserialization. Instead, use edn/read-string, which safely parses data without code execution risks.
+// TODO: Provide actual vulnerable code
+
+// Rule ID: 1,683 - Use of a Broken or Risky Cryptographic Algorithm
+// Description: The code uses the SHA-1 hashing algorithm, which is outdated and no longer secure for protecting sensitive data. SHA-1 is vulnerable to collision attacks, making it unsuitable for cryptographic purposes such as password hashing or digital signatures.
+// TODO: Provide actual vulnerable code
+
+// Rule ID: 1,684 - Improper Neutralization of Special Elements used in an OS Command ('OS Command Injection')
+// Description: The code executes shell commands using clojure.java.shell/sh with arguments that may include user input. If these inputs aren't properly validated or sanitized, attackers could inject malicious commands.
+// TODO: Provide actual vulnerable code
+
+// Rule ID: 1,685 - Use of Weak Hash
+// Description: The code is using the MD5 hashing algorithm, which is outdated and insecure. MD5 can be easily broken, making it unsuitable for protecting sensitive data like passwords.
+// TODO: Provide actual vulnerable code
+
+// Rule ID: 1,686 - Improper Restriction of XML External Entity Reference
+// Description: The code allows XML parsers to process external entity references or DOCTYPE declarations without disabling them. This makes it possible for attackers to inject malicious XML that the application will process, leading to security risks.
+// TODO: Provide actual vulnerable code
+

@@ -1,0 +1,142 @@
+// Real Vulnerability Examples for SOLIDITY
+
+// Rule ID: 1,661 - Integer Underflow (Wrap or Wraparound)
+// Description: Possible arithmetic underflow
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,647 - Improper Access Control
+// Description: The burn function allows any user to burn (destroy) tokens from any account, rather than restricting this action to the token owner. This means someone could burn tokens belonging to other users without their permission.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,648 - Improper Enforcement of Behavioral Workflow
+// Description: The function calls $VAULT.getPoolTokens() on a Balancer pool without protection against read-only reentrancy attacks. This means an attacker could exploit the call sequence to manipulate contract state or logic during the call.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,649 - Improper Input Validation
+// Description: Using abi.encodePacked with multiple dynamic-length arguments (like bytes, string, or arrays) in hashing functions can lead to data collisions, where different inputs produce the same hash. This is because the packed encoding can cause ambiguity in how data boundaries are interpreted.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,650 - Improper Enforcement of Behavioral Workflow
+// Description: Calling getRate() on a Balancer pool without proper protection leaves the function vulnerable to read-only reentrancy attacks. This means an attacker could re-enter the contract during the call and potentially manipulate its behavior.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,651 - Predictable from Observable State
+// Description: Using blockhash with the current or future block numbers (e.g., block.number, block.number + N) in Solidity always returns 0, leading to incorrect or predictable results. This makes it unsuitable for randomness or security-critical decisions.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,652 - Incorrect Calculation
+// Description: Using Keep3rV2.current() to fetch price data exposes your contract to oracle manipulation, as an attacker only needs to alter two data points to influence the reported value. This makes the price feed unreliable for critical operations like swaps, lending, or liquidations.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,653 - Improper Enforcement of a Single, Unique Action
+// Description: The code contains Unicode direction control characters, which can manipulate how text is displayed and potentially conceal malicious code or logic. These invisible characters can make the code harder to read and review, increasing the risk of hidden vulnerabilities.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,654 - Improper Enforcement of a Single, Unique Action
+// Description: A function that relies on a fixed msg.value can be called multiple times in a single transaction when used with batch or multicall contracts. This means the function could incorrectly process the same payment more than once, leading to unintended behavior.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,655 - Improper Access Control
+// Description: The sweepToken function lacks proper access control, allowing anyone to call it and transfer tokens from the contract. This exposes critical contract assets to unauthorized users.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,656 - Improper Input Validation
+// Description: The contract uses delegatecall with an address provided by external input, allowing untrusted users to execute code in the context of your contract. This means attackers can control what code runs and access your contract’s storage.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,657 - Improper Access Control
+// Description: The oracle update function in your smart contract is missing access control, allowing anyone to call it. This means that unauthorized users can update or manipulate oracle data.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,658 - Improper Access Control
+// Description: The contract allows anyone to update oracle price data without any access restrictions. This means that untrusted users can submit arbitrary price information to the system.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,659 - Improper Enforcement of Behavioral Workflow
+// Description: The transfer function calls callAfterTransfer before updating balances or completing state changes, which allows external contracts to re-enter the transfer process. This exposes the contract to reentrancy attacks, where a malicious contract could repeatedly trigger transfers in an unsafe state.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,660 - Improper Enforcement of Behavioral Workflow
+// Description: Calling external contracts or untrusted code from within the ERC777 tokensReceived() function can introduce a reentrancy risk. This allows attackers to re-enter contract functions before previous operations are completed, potentially bypassing intended logic or protections.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,662 - Improper Access Control
+// Description: The custom ERC721 contract's _transfer() function does not check if the caller is the owner or an approved account before transferring tokens. This lack of access control allows anyone to transfer NFTs without proper authorization.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,663 - Improper Enforcement of Behavioral Workflow
+// Description: Calling get_virtual_price() on a Curve pool without proper reentrancy protection exposes the function to read-only reentrancy attacks. This means external contracts could manipulate state between calls and get inaccurate or manipulated pricing data.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,664 - Improper Input Validation
+// Description: The code allows external users to specify both the address and data for a low-level call() function, enabling them to trigger arbitrary external contract calls without validation. This exposes the contract to external control over its behavior.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,665 - Out-of-bounds Write
+// Description: Declaring new state variables in a proxy contract can accidentally overwrite storage slots used by the implementation contract. This storage collision can corrupt contract data and break functionality.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,666 - Incorrect Calculation
+// Description: The code performs Uniswap v2/v3 token swaps without properly checking for slippage by setting the minimum output or maximum input value to zero or the maximum possible value. This means trades can execute even if the price moves drastically against the user.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,667 - Improper Access Control
+// Description: The Uniswap callback function in your contract is missing proper access control checks to ensure only authorized Uniswap pool contracts can call it. Without these validations, any external entity could trigger the callback and potentially manipulate your contract’s logic.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,668 - Incorrect Calculation
+// Description: The price oracle calculates token prices based on current reserves and total supply, but does not protect against rapid manipulation (e.g., via flashloans). This allows attackers to temporarily skew prices and exploit the system before the calculation resets.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,669 - Improper Access Control
+// Description: The _transfer() function in your ERC20 contract is set to public or external, allowing anyone to call it directly. This bypasses intended access controls and exposes internal transfer logic to arbitrary external calls.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,670 - Incorrect Calculation
+// Description: The code updates balances for both the sender ('from') and recipient ('to') without checking if they are the same address. This can allow users to manipulate their own balance during self-transfers, leading to incorrect accounting.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,671 - Improper Access Control
+// Description: The transferOwnership function is publicly accessible without proper access control, allowing anyone to change the contract's owner. This means unauthorized users can take ownership of the contract.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,672 - Improper Access Control
+// Description: A function in your smart contract allows anyone to call selfdestruct, which can permanently delete the contract and send its funds to an arbitrary address. This function lacks access control, so unauthorized users can trigger it.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,673 - Function Call With Incorrect Variable or Reference as Argument
+// Description: The transferFrom() function incorrectly handles allowance checks, allowing a user to spend tokens on behalf of other accounts without proper authorization. This flaw lets attackers exploit allowance logic to misuse or drain tokens from accounts that did not intend to approve them.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,674 - Improper Enforcement of Behavioral Workflow
+// Description: The borrowFresh() function in Compound updates critical state variables after transferring tokens out, which makes it vulnerable to reentrancy attacks. This order allows attackers to re-enter the function before the state is securely updated.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,675 - Improper Access Control
+// Description: The setMultipleAllowances() function lacks an onlyOwner modifier, meaning anyone—not just the contract owner—can call it. This allows unauthorized users to change allowances without proper permission checks.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,676 - Improper Enforcement of Behavioral Workflow
+// Description: The onERC721Received() callback in your ERC721 contract is vulnerable to reentrancy if external calls are made before internal state updates. This allows attackers to exploit the contract by recursively calling functions before changes are finalized.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,677 - Improper Authorization
+// Description: The contract calls erc20.transferFrom with a user-supplied 'from' address instead of restricting it to msg.sender. This allows anyone to transfer tokens from any address that has approved the contract, not just their own.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,678 - Improper Input Validation
+// Description: The contract decodes user-supplied context (ctx) without validating its authenticity, allowing attackers to craft calldata that impersonates other accounts. This missing input validation exposes the contract to unauthorized actions.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,679 - Improper Validation of Specified Index, Position, or Offset in Input
+// Description: The UniswapV3 adapter incorrectly extracts token addresses from the swap path, which can lead to reading data from the wrong position. This improper parsing can cause the contract to use unintended or attacker-controlled token addresses during swaps.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,680 - Function Call With Incorrect Variable or Reference as Argument
+// Description: The 'from' parameter is incorrectly checked in the _allowances mapping, meaning the function verifies allowances for the wrong address. This can allow unauthorized token burns or prevent valid burns from occurring.
+// TODO: Add real Solidity code here
+
+// Rule ID: 1,681 - Improper Verification of Cryptographic Signature
+// Description: The function uses ECDSA.recover to validate signatures but does not protect against signature malleability, meaning the same message can have multiple valid signatures. This can allow attackers to generate alternative signatures that pass verification.
+// TODO: Add real Solidity code here
+
