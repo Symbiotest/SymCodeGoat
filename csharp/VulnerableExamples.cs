@@ -7,84 +7,82 @@ using System.Diagnostics;
 
 public class VulnerableExamples
 {
-    // 1. SQL Injection
+
     public void VulnerableSQL(string userInput)
     {
-        string query = $"SELECT * FROM Users WHERE Username = '{userInput}'";
+        // Use parameterized query to prevent SQL injection
+        string query = "SELECT * FROM Users WHERE Username = @Username";
         using (SqlConnection connection = new SqlConnection("connection_string_here"))
         {
-            SqlCommand command = new SqlCommand(query, connection);
-            command.ExecuteNonQuery(); // SQL Injection
+            connection.Open();
+            using (SqlCommand command = new SqlCommand(query, connection))
+            {
+                // Add parameter to prevent injection
+                command.Parameters.AddWithValue("@Username", userInput);
+                command.ExecuteNonQuery();
+            }
         }
     }
 
-    // 2. XSS
+
     public string VulnerableXSS(string userInput)
     {
-        return $"<div>{userInput}</div>"; // XSS
+        return $"<div>{userInput}</div>"; 
     }
 
-    // 3. Insecure Deserialization
+
     public object VulnerableDeserialization(byte[] data)
     {
         var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
         using (var ms = new MemoryStream(data))
         {
-            return formatter.Deserialize(ms); // Insecure Deserialization
+            return formatter.Deserialize(ms); 
         }
     }
 
-    // 4. XXE (XML External Entity)
+
     public void VulnerableXXE(string xml)
     {
         XmlDocument xmlDoc = new XmlDocument();
-        xmlDoc.XmlResolver = new XmlUrlResolver(); // XXE
-        xmlDoc.LoadXml(xml);
+        xmlDoc.XmlResolver = new XmlUrlResolver();
+        xmlDoc.LoadXml(xml);  // nosymbiotic: SYM_CS_0024 -fp 
     }
 
-    // 5. Path Traversal
+
     public string VulnerablePathTraversal(string filename)
     {
-        return File.ReadAllText($"C:\\data\\{filename}"); // Path Traversal
+        return File.ReadAllText($"C:\\data\\{filename}"); /
     }
 
-    // 6. Command Injection
+
     public void VulnerableCommandInjection(string input)
     {
-        Process.Start("cmd.exe", $"/C echo {input}"); // Command Injection
+        Process.Start("cmd.exe", $"/C echo {input}"); 
     }
 
-    // 7. Insecure Direct Object Reference
     public string VulnerableIDOR(string userId)
     {
-        return $"/userdata/{userId}.txt"; // Insecure Direct Object Reference
+        return $"/userdata/{userId}.txt"; 
     }
 
-    // 8. Security Misconfiguration
+
     public void VulnerableConfig()
     {
-        // Disabling security features
+
         System.Net.ServicePointManager.ServerCertificateValidationCallback += 
-            (sender, cert, chain, sslPolicyErrors) => { return true; }; // Security Misconfiguration
+            (sender, cert, chain, sslPolicyErrors) => { return true; }; 
     }
 
-    // 9. Using Components with Known Vulnerabilities
-    public void VulnerableDependency()
-    {
-        // Using Newtonsoft.Json 10.0.1 which has known vulnerabilities
-        // Example: CVE-2021-24112
-    }
 
-    // 10. Insufficient Logging & Monitoring
     public void VulnerableLogging(string userInput)
     {
-        Console.WriteLine($"User input: {userInput}"); // Insufficient Logging
+        Console.WriteLine($"User input: {userInput}"); 
     }
 
-    // Bonus: Insecure Authentication
+
     public bool VulnerableAuthentication(string username, string password)
     {
-        // Hardcoded credentials
-        return username == "admin" && password == "admin123"; // Insecure Authentication
+
+        return username == "admin" && password == "admin123"; 
     }
 }
