@@ -24,7 +24,7 @@ func vulnerableSQL(db *sql.DB, username string) {
 // 2. XSS
 func vulnerableXSS(w http.ResponseWriter, r *http.Request) {
 	userInput := r.URL.Query().Get("input")
-	fmt.Fprintf(w, "<div>%s</div>", userInput) // XSS // nosymbiotic: SYM_GO_0054
+	fmt.Fprintf(w, "<div>%s</div>", userInput) // XSS
 }
 
 // 3. Insecure Deserialization
