@@ -1,2 +1,4 @@
 blocking: 
-  severity_threshold: medium
+  severity_threshold: high
+  providers: 
+    - Azure
