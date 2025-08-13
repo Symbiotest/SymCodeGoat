@@ -1,2 +1,2 @@
 blocking: 
-  severity_threshold: high
+  severity_threshold: medium
