@@ -82,6 +82,7 @@ fn vulnerable_logging(input: &str) {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Example usage
+    // nosymbiotic: SYM_RS_0003 -- please specify an ignore reason
     let args: Vec<String> = env::args().collect();
     
     if args.len() > 1 {

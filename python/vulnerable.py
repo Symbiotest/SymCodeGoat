@@ -58,3 +58,15 @@ def login(username, password):
     if username == "admin" and password == "admin123":
         return True
     return False
+
+# VULNERABILITY: SQL Injection — user input directly concatenated into query
+# This is intentionally vulnerable for SAST testing purposes
+user_input = app_config.get('project_filter', '')  # Simulated user input
+querie = " AND projects.path = '" + user_input + "'"
+cursor.execute(querie)
+
+
+cursor.execute("SELECT * FROM projects WHERE path = '" + user_input + "'")
+
+query = "SELECT * FROM projects WHERE path = '" + user_input + "'"
+cursor.execute(query)
