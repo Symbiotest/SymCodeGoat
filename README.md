@@ -2,7 +2,7 @@
 
 This repository contains intentionally vulnerable code examples across multiple programming languages for testing security scanning tools like Semgrep. Each directory contains examples of OWASP Top 10 vulnerabilities.
 
-## OWASP Top 10 2021 Coverage
+## OWASP Top 10 2021 Coverage 
 
 1. **Broken Access Control**
 2. **Cryptographic Failures**
