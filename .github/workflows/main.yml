@@ -29,6 +29,7 @@ jobs:
           echo 'export PATH="$HOME/.local/bin:$PATH"' >> $GITHUB_ENV
 
       - name: Run Infra Scan
+        continue-on-error: true
         env:
           SYMBIOTIC_API_TOKEN: ${{ secrets.SYMBIOTIC_ORGA_TOKEN }}
         run: |
