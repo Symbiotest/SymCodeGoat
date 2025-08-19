@@ -15,5 +15,4 @@ jobs:
         - name: Scan
           uses: SymbioticSec/actions/scan@v0.1.2
           with:
-            scan-type: code
             api-token: ${{ secrets.SYMBIOTIC_ORGA_TOKEN }}
