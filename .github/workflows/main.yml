@@ -1,4 +1,4 @@
-name: Symbiotest
+name: Acme
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - '*'
   
 jobs: 
-  Checkov-IaC-Security-scan:
+  Checkov-IaC-Security-Scan:
       runs-on: ubuntu-latest
   
       steps:
@@ -18,3 +18,30 @@ jobs:
             # This will add both a CLI output to the console and create a results.sarif file
             output_format: cli,sarif
             output_file_path: console,results.sarif
+            
+  Snyk-Ruby-Security-Scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/ruby@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }} 
+          
+  Snyk-Python-Security-Scan:
+      runs-on: ubuntu-latest
+      steps:
+        - uses: actions/checkout@master
+        - name: Run Snyk to check for vulnerabilities
+          uses: snyk/actions/python@master
+          env:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+
+  Snyk-PHP-Security-Scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/php@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
