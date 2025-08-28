@@ -6,32 +6,15 @@ on:
       - '*'
   
 jobs: 
-  test-full-action:
+  Checkov-IaC-Security-scan:
       runs-on: ubuntu-latest
   
       steps:
-        - uses: actions/checkout@v4
+        - uses: actions/checkout@v3
   
-        - name: Scan
-          uses: SymbioticSec/actions/scan@v0.1.4
-          with:
-            api-token: ${{ secrets.SYMBIOTIC_ORGA_TOKEN }}
-
-  test-full-script:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Install Symbiotic CLI
-        run: |
-          curl -sSL https://github.com/SymbioticSec/cli/releases/download/v0.11/install.sh | bash
-          echo 'export PATH="$HOME/.local/bin:$PATH"' >> $GITHUB_ENV
-
-      - name: Run Infra Scan
-        env:
-          SYMBIOTIC_API_TOKEN: ${{ secrets.SYMBIOTIC_API_TOKEN }}
-        run: |
-          symbiotic-cli ci ./
-
-    
+        - name: Checkov IaC Security Scan
+        uses: bridgecrewio/checkov-action@v12
+        with:
+          # This will add both a CLI output to the console and create a results.sarif file
+          output_format: cli,sarif
+          output_file_path: console,results.sarif
