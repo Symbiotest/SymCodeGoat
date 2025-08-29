@@ -7,7 +7,7 @@ public with sharing class VulnerableApex {
     }
     
     // 2. Cross-Site Scripting (XSS) in Visualforce
-    public String userInput { get; set; }
+    public String userInput { get; set; } 
     public String getUnsafeOutput() {
         return userInput; // XSS if not properly escaped in Visualforce
     }
