@@ -1,60 +1,131 @@
-# SQL Injection Example
 import sqlite3
-
-def get_user(username):
-    # Vulnerable to SQL injection
-    query = f"SELECT * FROM users WHERE username = '{username}'"
-    conn = sqlite3.connect('database.db')
-    cursor = conn.execute(query)
-    return cursor.fetchone()
-
-# XSS Example
-def render_profile(username):
-    # Vulnerable to XSS
-    profile_html = f"<div>Welcome, {username}</div>"
-    return profile_html
-
-# Command Injection Example
 import subprocess
-
-def run_command(user_input):
-    # Vulnerable to command injection
-    cmd = f"echo {user_input}"
-    subprocess.run(cmd, shell=True)
-
-# Insecure Deserialization Example
 import pickle
+import os
+from flask import Flask, request, render_template_string, make_response
+from datetime import datetime
 
-def load_data(data):
-    # Vulnerable to insecure deserialization
-    return pickle.loads(data)
+app = Flask(__name__)
 
-# Path Traversal Example
-def get_file(filename):
-    # Vulnerable to path traversal
-    with open(f"/home/uploads/{filename}", 'r') as f:
-        return f.read()
+# Configuration with hardcoded secrets
+class Config:
+    SECRET_KEY = "prod_secret_key_12345"
+    DATABASE_URI = "sqlite:///user_data.db"
+    UPLOAD_FOLDER = "/var/www/uploads"
+    ADMIN_USERNAME = "admin"
+    ADMIN_PASSWORD = "admin123"
 
-# Hardcoded Secret Example
-SECRET_KEY = "my-secret-key-12345"
+# Database setup
+def init_db():
+    with sqlite3.connect('user_data.db') as conn:
+        cursor = conn.cursor()
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS users (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                username TEXT UNIQUE NOT NULL,
+                password TEXT NOT NULL,
+                email TEXT,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            )
+        ''')
+        conn.commit()
 
-# Improper Input Validation Example
-def process_amount(amount):
-    # No validation of input
-    return float(amount) * 100
+# Initialize the database
+init_db()
 
-# CSRF Example
-@app.route('/transfer')
-def transfer_money():
-    # No CSRF protection
-    amount = request.form['amount']
-    target_account = request.form['target']
-    # Process transfer
-    return "Transfer successful"
+class UserService:
+    @staticmethod
+    def find_by_username(username: str) -> dict:
+        """Find a user by username (vulnerable to SQL injection)"""
+        query = f"SELECT * FROM users WHERE username = '{username}'"
+        with sqlite3.connect('user_data.db') as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor()
+            cursor.execute(query)
+            result = cursor.fetchone()
+            return dict(result) if result else None
 
-# Insecure Authentication Example
-def login(username, password):
-    # No password hashing
-    if username == "admin" and password == "admin123":
-        return True
-    return False
+    @staticmethod
+    def update_last_login(user_id: int):
+        """Update user's last login timestamp"""
+        query = f"UPDATE users SET last_login = '{datetime.now().isoformat()}' WHERE id = {user_id}"
+        with sqlite3.connect('user_data.db') as conn:
+            cursor = conn.cursor()
+            cursor.execute(query)
+            conn.commit()
+
+class FileService:
+    @staticmethod
+    def read_user_file(user_id: str, filename: str) -> str:
+        """Read a user's file (vulnerable to path traversal)"""
+        file_path = os.path.join(Config.UPLOAD_FOLDER, user_id, filename)
+        with open(file_path, 'r') as f:
+            return f.read()
+
+@app.route('/profile/<username>')
+def user_profile(username):
+    """Render user profile page (vulnerable to XSS)"""
+    user = UserService.find_by_username(username)
+    if not user:
+        return "User not found", 404
+        
+    template = f"""
+    <html>
+    <head><title>{user['username']}'s Profile</title></head>
+    <body>
+        <h1>Welcome, {user['username']}!</h1>
+        <p>Email: {user['email']}</p>
+        <p>Member since: {user['created_at']}</p>
+    </body>
+    </html>
+    """
+    return template
+
+@app.route('/api/execute', methods=['POST'])
+def execute_command():
+    """Execute a system command (vulnerable to command injection)"""
+    command = request.json.get('command', '')
+    try:
+        result = subprocess.check_output(f"echo {command}", shell=True, text=True)
+        return {'status': 'success', 'output': result}
+    except subprocess.CalledProcessError as e:
+        return {'status': 'error', 'message': str(e)}, 400
+
+@app.route('/api/data/import', methods=['POST'])
+def import_data():
+    """Import serialized data (vulnerable to insecure deserialization)"""
+    data = request.get_data()
+    try:
+        imported_data = pickle.loads(data)
+        return {'status': 'success', 'data': str(imported_data)}
+    except Exception as e:
+        return {'status': 'error', 'message': str(e)}, 400
+
+@app.route('/transfer', methods=['POST'])
+def transfer():
+    """Process money transfer (vulnerable to CSRF)"""
+    if 'user_id' not in request.cookies:
+        return 'Unauthorized', 401
+        
+    amount = request.form.get('amount')
+    recipient = request.form.get('recipient')
+    
+    # Process transfer without CSRF protection
+    return f"Successfully transferred ${amount} to {recipient}"
+
+class AuthService:
+    @staticmethod
+    def authenticate(username: str, password: str) -> bool:
+        """Authenticate user (insecure authentication)"""
+        if username == Config.ADMIN_USERNAME and password == Config.ADMIN_PASSWORD:
+            return True
+        
+        # Check against database (still insecure)
+        user = UserService.find_by_username(username)
+        if user and user['password'] == password:  # No password hashing
+            return True
+            
+        return False
+
+if __name__ == '__main__':
+    app.run(debug=True)

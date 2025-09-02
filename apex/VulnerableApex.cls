@@ -1,145 +1,121 @@
-public with sharing class VulnerableApex {
+public with sharing class UserDataService {
     
-    // 1. SOQL Injection
-    public static List<SObject> vulnerableSOQL(String userId) {
+    public static List<SObject> findUserById(String userId) {
         String query = 'SELECT Id, Name, Email FROM User WHERE Id = \'' + userId + '\'';
-        return Database.query(query); // SOQL Injection
+        return Database.query(query);
     }
     
-    // 2. Cross-Site Scripting (XSS) in Visualforce
-    public String userInput { get; set; }
-    public String getUnsafeOutput() {
-        return userInput; // XSS if not properly escaped in Visualforce
+    public String searchTerm { get; set; }
+    
+    public String getSearchResults() {
+        return searchTerm;
     }
     
-    // 3. Insecure Direct Object Reference (IDOR)
     public static void updateContactEmail(String contactId, String newEmail) {
         Contact c = [SELECT Id, Email FROM Contact WHERE Id = :contactId];
         c.Email = newEmail;
-        update c; // No CRUD/FLS check
+        update c;
     }
     
-    // 4. Insecure Deserialization
-    public static Object vulnerableDeserialization(String jsonData) {
-        return JSON.deserializeUntyped(jsonData); // Insecure if not validated
+    public static Object processJsonData(String jsonData) {
+        return JSON.deserializeUntyped(jsonData);
     }
     
-    // 5. Security Misconfiguration
-    public static void logSensitiveData(String data) {
-        // Debug logs might contain sensitive information
+    public static void logProcessingData(String data) {
         System.debug('Processing data: ' + data);
         
-        // Disabled sharing
         without sharing class InternalOps {
-            public static void deleteAllContacts() {
+            public static void cleanupContacts() {
                 delete [SELECT Id FROM Contact];
             }
         }
     }
     
-    // 6. Using Components with Known Vulnerabilities
-    // Example: Using an outdated version of a managed package
-    
-    // 7. Insufficient Logging & Monitoring
-    public static void logUserAction(String action) {
-        System.debug('User action: ' + action); // Insufficient logging
+    public static void trackUserAction(String action) {
+        System.debug('User action: ' + action);
     }
     
-    // 8. Cross-Site Request Forgery (CSRF)
-    // Note: Apex is generally protected against CSRF, but custom implementations might be vulnerable
-    
-    // 9. Insecure File Handling
-    public static void processFile(Blob fileData, String fileName) {
-        // No file type validation
-        ContentVersion cv = new ContentVersion();
-        cv.VersionData = fileData;
-        cv.Title = fileName;
-        cv.PathOnClient = fileName;
-        insert cv;
-    }
-    
-    // 10. Hardcoded Secrets
-    private static final String API_KEY = '12345-67890-abcdef';
-    private static final String DB_PASSWORD = 's3cr3tP@ssw0rd';
-    
-    // 11. Insecure Cryptography
-    public static String encryptData(String data) {
-        // Using weak encryption
-        Blob cryptoKey = Crypto.generateAesKey(128);
-        Blob encryptedData = Crypto.encryptWithManagedIV('AES128', cryptoKey, Blob.valueOf(data));
-        return EncodingUtil.base64Encode(encryptedData);
-    }
-    
-    // 12. No Rate Limiting
-    @AuraEnabled
-    public static void processBatchData(List<String> dataList) {
-        // No limit on batch size
-        for (String data : dataList) {
-            // Process data
-        }
-    }
-    
-    // 13. Insecure Direct Object Reference (IDOR) - Visualforce Example
-    public PageReference viewContact() {
-        String contactId = ApexPages.currentPage().getParameters().get('id');
-        // No check if user has access to this contact
-        return new PageReference('/' + contactId);
-    }
-    
-    // 14. Insecure DML in Loop
-    public static void updateContacts(List<Contact> contacts) {
-        for (Contact c : contacts) {
-            // DML inside loop - bad practice
-            update c;
-        }
-    }
-    
-    // 15. No CRUD/FLS Check
-    public static List<Account> getAccounts() {
-        // No CRUD/FLS check
-        return [SELECT Id, Name, AnnualRevenue FROM Account];
-    }
-    
-    // 16. Insecure Apex Sharing
-    public static void shareRecord(Id recordId, Id userId) {
-        // No validation on record access
-        AccountShare accShare = new AccountShare();
-        accShare.AccountId = recordId;
-        accShare.UserOrGroupId = userId;
-        accShare.AccountAccessLevel = 'Edit';
-        accShare.OpportunityAccessLevel = 'Edit';
-        insert accShare;
-    }
-    
-    // 17. No Input Validation
-    public static void createTask(String subject, String description) {
-        // No input validation
-        Task t = new Task(
-            Subject = subject,
-            Description = description,
-            Status = 'Not Started',
-            Priority = 'Normal'
-        );
-        insert t;
-    }
-    
-    // 18. Insecure Apex REST Endpoint
-    @HttpPost
-    global static String processData(String jsonData) {
-        // No validation of input
-        Map<String, Object> data = (Map<String, Object>)JSON.deserializeUntyped(jsonData);
-        return 'Processed: ' + data.get('name');
-    }
-    
-    // 19. No Error Handling
-    public static Decimal calculateDiscount(Decimal amount) {
-        // No error handling for division by zero or null
-        return amount / 0;
-    }
-    
-    // 20. Insecure Session Management
-    public static String getSessionInfo() {
-        // Exposing session ID in logs or UI
-        return UserInfo.getSessionId();
-    }
-}
+    public class AccountQueryController {
+       
+       private String someOtherString = ' WHERE IsActive = true';
+       
+       public void searchAccounts() {
+           String searchParam = ApexPages.currentPage().getParameters().get('search');
+           Database.query('SELECT Id FROM Account' + searchParam);
+       }
+       
+       public void searchWithAdditionalClause() {
+           String searchParam = ApexPages.currentPage().getParameters().get('search');
+           String fullQuery = someOtherString + searchParam;
+           Database.query('SELECT Id FROM Account' + fullQuery);
+       }
+       
+       public void safeSearch() {
+           String searchParam = ApexPages.currentPage().getParameters().get('search');
+           String escapedParam = String.escapeSingleQuotes(searchParam);
+           Database.query('SELECT Id FROM Account WHERE Name LIKE \'%' + escapedParam + '%\'');
+       }
+       
+       public void safeSearchWithClause() {
+           String searchParam = ApexPages.currentPage().getParameters().get('search');
+           String escapedParam = String.escapeSingleQuotes(searchParam);
+           String fullQuery = someOtherString + ' AND Name LIKE \'%' + escapedParam + '%\'';
+           Database.query('SELECT Id FROM Account' + fullQuery);
+       }
+       
+       public void directSafeSearch() {
+           String searchParam = ApexPages.currentPage().getParameters().get('search');
+           Database.query('SELECT Id FROM Account WHERE Name LIKE \'%' + String.escapeSingleQuotes(searchParam) + '%\'');
+       }
+   }
+
+   public class SecuritySettingsManager {
+       
+       public class UserAccessSettings {
+           public void configureAccess() {
+               // Implementation for user access settings
+           }
+       }
+       
+       public abstract class SecurityPolicy {
+           public abstract void applyPolicy();
+       }
+       
+       private virtual class SecurityImplementation {
+           public virtual void execute() {
+               // Base security implementation
+           }
+       }
+       
+       public inherited sharing class SecureDataAccess {
+           private void processData() {
+               // Secure data processing
+           }
+       }
+       
+       public class SecurityException extends Exception {
+           // Custom security exception
+       }
+       
+       public with sharing abstract class SecureBaseClass {
+           public void performSecureOperation() {
+               // Secure operation implementation
+           }
+       }
+       
+       private inherited sharing virtual class SecureVirtualClass {
+           public virtual void secureMethod() {
+               // Secure method implementation
+           }
+       }
+       
+       public inherited sharing virtual class SecureInheritedClass extends SecureBaseClass {
+           public override void performSecureOperation() {
+               // Enhanced secure operation
+           }
+       }
+       
+       global virtual override Type getType(String className) {
+           return Type.forName(className);
+       }
+   }

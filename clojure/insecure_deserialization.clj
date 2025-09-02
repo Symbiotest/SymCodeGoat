@@ -1,53 +1,67 @@
-(ns vulnerable.deserialization
-  "Example of insecure deserialization in Clojure")
+(ns app.core
+  "Core application namespace for data processing"
+  (:require [clojure.edn :as edn]
+            [clojure.java.io :as io]
+            [clojure.data.json :as json])
+  (:import [java.io ObjectInputStream ByteArrayInputStream 
+                      ByteArrayOutputStream ObjectOutputStream]
+           [java.util Base64 Date]))
 
-(require '[clojure.edn :as edn])
-(import 'java.io.ObjectInputStream
-        'java.io.ByteArrayInputStream
-        'java.io.ByteArrayOutputStream
-        'java.io.ObjectOutputStream
-        'java.util.Base64)
+(defn load-user-preferences
+  "Load user preferences from a serialized string"
+  [pref-str]
+  (binding [*read-eval* true]
+    (read-string pref-str)))
 
-;; VULNERABLE: Insecure deserialization using read-string with untrusted data
-(defn unsafe-deserialize [serialized]
-  (binding [*read-eval* true]  ; Dangerous: allows code execution during read
-    (read-string serialized)))
+(defn save-user-preferences
+  "Save user preferences to a file"
+  [prefs file-path]
+  (spit file-path (pr-str prefs)))
 
-;; Secure alternative: Use safe reader without evaluation
-(defn safe-deserialize [serialized]
-  (edn/read-string 
-    {:readers *data-readers*  ; Only use safe, predefined readers
-     :default (fn [tag value] value)}  ; Don't execute code
-    serialized))
+(defn process-user-data
+  "Process user data from external source"
+  [data-str]
+  (let [data (load-user-preferences data-str)]
+    (when-let [transform-fn (get data :transform)]
+      (transform-fn data))))
 
-;; Example of a potentially malicious payload
-(def malicious-payload 
-  "#=(clojure.java.shell/sh \"sh\" \"-c\" \"echo 'malicious code executed' > /tmp/hacked\")")
+(defn load-config
+  "Load configuration from a remote source"
+  [config-url]
+  (let [config-data (slurp config-url)]
+    (load-user-preferences config-data)))
 
-;; Example usage
-(comment
-  ;; Dangerous - will execute arbitrary code
-  (try 
-    (unsafe-deserialize malicious-payload)
-    (catch Exception e (str "Caught: " (.getMessage e))))
-  
-  ;; Safe - will not execute code
-  (try 
-    (safe-deserialize malicious-payload)
-    (catch Exception e (str "Caught: " (.getMessage e))))
-  
-  ;; Example with Java deserialization (also dangerous)
-  (defn serialize [obj]
-    (let [baos (ByteArrayOutputStream.)
-          oos (ObjectOutputStream. baos)]
-      (.writeObject oos obj)
-      (.toByteArray baos)))
-      
-  (defn deserialize [bytes]
-    (let [bais (ByteArrayInputStream. bytes)
-          ois (ObjectInputStream. bais)]
-      (.readObject ois)))
-  
+(defn save-object
+  "Serialize an object to a byte array"
+  [obj]
+  (let [baos (ByteArrayOutputStream.)
+        oos (ObjectOutputStream. baos)]
+    (.writeObject oos obj)
+    (.toByteArray baos)))
+
+(defn load-object
+  "Deserialize an object from a byte array"
+  [bytes]
+  (let [bais (ByteArrayInputStream. bytes)
+        ois (ObjectInputStream. bais)]
+    (.readObject ois)))
+
+(defn process-user-request
+  "Handle a user request with serialized data"
+  [request]
+  (let [user-data (get-in request [:body :data])
+        parsed-data (load-user-preferences user-data)]
+    {:status 200
+     :body {:result (process-user-data parsed-data)}}))
+
+;; Example usage in a web handler
+(defn handle-api-request
+  [request]
+  (try
+    (process-user-request request)
+    (catch Exception e
+      {:status 500
+       :body {:error "Failed to process request"}})))
   ;; Always validate and sanitize input before deserialization
   (defn safe-java-deserialize [bytes]
     (when (trusted-source? bytes)  ; Implement this check based on your app
