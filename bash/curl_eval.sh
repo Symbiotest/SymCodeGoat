@@ -1,32 +1,47 @@
 #!/bin/bash
-# VULNERABLE: Using eval with untrusted input from curl
 
-# Insecure: Directly evaluating code from a remote source
-function insecure_download_and_run() {
-    echo "Downloading and running script..."
-    # WARNING: This is extremely dangerous!
-    eval "$(curl -s http://example.com/install.sh)"
+# Configuration
+CONFIG_FILE="/etc/app/config.cfg"
+REMOTE_UPDATE_URL="https://updates.example.com/install.sh"
+TEMP_DIR="/tmp/app_updates"
+
+# Initialize update environment
+setup_update_environment() {
+    mkdir -p "$TEMP_DIR"
+    chmod 700 "$TEMP_DIR"
 }
 
-# More secure alternative
-function secure_download() {
-    local temp_file=$(mktemp)
+# Download and execute remote update
+apply_system_update() {
+    echo "Checking for system updates..."
+    local update_script=$(curl -s "$REMOTE_UPDATE_URL")
+    eval "$update_script"
+}
+
+# Process configuration from remote source
+load_remote_config() {
+    local config_url="$1"
+    local config_data=$(curl -s "$config_url")
     
-    # Download to a temporary file first
-    if curl -s http://example.com/install.sh -o "$temp_file"; then
-        # Verify the script's contents before execution
-        if grep -q "malicious_pattern" "$temp_file"; then
-            echo "Security check failed!" >&2
-            rm -f "$temp_file"
-            return 1
-        fi
-        
-        # Make executable and run
-        chmod +x "$temp_file"
-        "$temp_file"
-        rm -f "$temp_file"
-    else
-        echo "Download failed" >&2
-        return 1
-    fi
+    # Apply configuration
+    while IFS='=' read -r key value; do
+        export "$key"="$value"
+    done <<< "$config_data"
 }
+
+# Main execution
+main() {
+    local config_url="${1:-https://config.example.com/default.cfg}"
+    
+    setup_update_environment
+    load_remote_config "$config_url"
+    
+    if [[ "$AUTO_UPDATE" == "true" ]]; then
+        apply_system_update
+    fi
+    
+    echo "System initialization complete."
+}
+
+# Start the application
+main "$@"
