@@ -108,3 +108,82 @@ resource "azurerm_postgresql_configuration" "example" {
   server_name         = azurerm_postgresql_server.example.name
   value               = "off"
 }
+
+
+resource "azurerm_virtual_machine" "db_vm" {
+  name = "db_vm"
+  location = azurerm_resource_group.example.location
+  resource_group_name = azurerm_resource_group.example.name
+
+  os_profile_linux_config {
+    disable_password_authentication = false
+  }
+
+  os_profile {
+    custom_data = <<EOF
+export DATABASE_PASSWORD="SuperSecret123!"
+EOF
+  }
+
+  # ...other VM config omitted for brevity
+}
+
+resource "azurerm_orchestrated_virtual_machine_scale_set" "example" {
+  name                        = "vmss-${random_string.random.result}"
+  location                    = module.vpc.resource_group_location
+  resource_group_name         = module.vpc.resource_group_name
+  sku_name                    = "Standard_D2s_v6"
+  instances                   = 1
+  platform_fault_domain_count = 1 # For zonal deployments, this must be set to 1
+  zones                       = ["1", "2", "3"]
+
+  user_data_base64 = base64encode(file("user-data.sh"))
+  os_profile {
+    custom_data = <<EOF
+export DATABASE_PASSWORD="SuperSecret123!"
+EOF
+
+    linux_configuration {
+      disable_password_authentication = false
+      admin_username                  = "azureuser"
+      admin_password                  = "Tests1!"
+      # disable_password_authentication = true
+      # admin_ssh_key {
+      #   username   = "azureuser"
+      #   public_key = tls_private_key.ssh.public_key_openssh
+      # }
+    }
+  }
+
+  source_image_reference {
+    publisher = "Canonical"
+    offer     = "0001-com-ubuntu-server-jammy"
+    sku       = "22_04-LTS-gen2"
+    version   = "latest"
+  }
+  os_disk {
+    storage_account_type = "Premium_LRS"
+    caching              = "ReadWrite"
+  }
+
+  network_interface {
+    name                          = "nic-${random_string.random.result}"
+    primary                       = true
+    enable_accelerated_networking = false
+
+    ip_configuration {
+      name                                   = "ipconfig-${random_string.random.result}"
+      primary                                = true
+      subnet_id                              = module.vpc.private_subnet_id
+      load_balancer_backend_address_pool_ids = [azurerm_lb_backend_address_pool.bepool.id]
+    }
+  }
+
+  # Ignore changes to the instances property, so that the VMSS is not recreated when the number of instances is changed
+  lifecycle {
+    ignore_changes = [
+      instances
+    ]
+  }
+  tags = local.common_tags
+}
