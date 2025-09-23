@@ -148,13 +148,13 @@ resource "aws_rds_cluster" "app9-rds-cluster" {
 resource "aws_rds_cluster" "vulnerable-remote-cluster" {
   cluster_identifier      = "app9-rds-cluster"
   allocated_storage       = 10
-  backup_retention_period = 1
+  backup_retention_period = 15
 }
 
 resource "aws_rds_cluster" "authent-logs-rds-cluster" {
   cluster_identifier      = "app8-rds-cluster"
   allocated_storage       = 10
-  backup_retention_period = 1
+  backup_retention_period = 15
   tags = {
     git_commit           = "079fe74f6b96d887c245664fbd8cf676c92f20e5"
     git_file             = "terraform/aws/rds.tf"
