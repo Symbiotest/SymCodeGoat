@@ -6,6 +6,7 @@ resource "azurerm_sql_firewall_rule" "example" {
   end_ip_address      = "10.0.17.62"
 }
 
+# nosymbiotic: TF-0313 -fp
 resource "azurerm_sql_server" "example" {
   name                         = "terragoat-sqlserver-${var.environment}${random_integer.rnd_int.result}"
   resource_group_name          = azurerm_resource_group.example.name

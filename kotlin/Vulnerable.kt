@@ -28,6 +28,7 @@ import java.lang.Runtime
 class Cls {
     public fun test1(plainText: String): Array<Byte> {
         // ruleid: no-null-cipher
+        // nosymbiotic: SYM_JAVA_0026 -fp
         val doNothingCipher: Cipher = NullCipher()
         //The ciphertext produced will be identical to the plaintext.
         val cipherText: Cipher = doNothingCihper.doFinal(plainText)

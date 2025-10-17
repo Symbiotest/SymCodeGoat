@@ -123,6 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 
                 <?php if ($user): ?>
                     <h2>Your Profile</h2>
+                    // nosymbiotic: SYM_PHP_0041 -ignore-educational-example
                     <p>Email: <?php echo $user['email']; ?></p>
                     <p>Member since: <?php echo $user['join_date']; ?></p>
                     

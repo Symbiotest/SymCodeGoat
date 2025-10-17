@@ -4,6 +4,7 @@ resource "aws_rds_cluster" "app1-rds-cluster" { # nosymbiotic: TF-0212 -- please
   backup_retention_period = 7
   storage_encrypted       = true
   kms_key_id              = "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
+  deletion_protection     = true
   tags = {
     git_commit           = "079fe74f6b96d887c245664fbd8cf676c92f20e5"
     git_file             = "terraform/aws/rds.tf"
@@ -132,7 +133,7 @@ resource "aws_rds_cluster" "app8-rds-cluster" {
 resource "aws_rds_cluster" "app9-rds-cluster" {
   cluster_identifier      = "app9-rds-cluster"
   allocated_storage       = 10
-  backup_retention_period = 25
+  backup_retention_period = 1
   tags = {
     git_commit           = "079fe74f6b96d887c245664fbd8cf676c92f20e5"
     git_file             = "terraform/aws/rds.tf"
