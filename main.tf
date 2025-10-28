@@ -251,7 +251,7 @@ resource "aws_s3_bucket" "assets_bucket" {
 # S3 bucket for CloudTrail-like public logging (vulnerability 2: public log access)
 resource "aws_s3_bucket" "cloudtrail_bucket_public" {
   bucket = var.cloudtrail_bucket_name
-  acl    = "public-read"
+  acl    = "private"
 
   tags = {
     Name        = "enterprise-cloudtrail-logs-prod-public"
