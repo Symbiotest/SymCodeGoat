@@ -21,12 +21,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Install packages
-        run: apt-get update && apt-get install -y curl bash git unzip
 
       - name: Install Symbiotic CLI
+        shell: bash
         run: |
           curl -sSL https://github.com/SymbioticSec/cli/releases/latest/download/install.sh | bash
           echo 'export PATH="$HOME/.local/bin:$PATH"' >> $GITHUB_ENV
