@@ -23,9 +23,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install packages
+        run: apt-get update && apt-get install -y curl bash git unzip
+
       - name: Install Symbiotic CLI
         run: |
-          curl -sSL https://github.com/SymbioticSec/cli/releases/download/v0.11/install.sh | bash
+          curl -sSL https://github.com/SymbioticSec/cli/releases/latest/download/install.sh | bash
           echo 'export PATH="$HOME/.local/bin:$PATH"' >> $GITHUB_ENV
 
       - name: Run Infra Scan
