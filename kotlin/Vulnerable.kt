@@ -7,7 +7,7 @@ public class WeakHashes {
       var sha1Digest: MessageDigest = MessageDigest.getInstance("SHA1")
       sha1Digest.update(password.getBytes())
       val hashValue: Array<Byte> = sha1Digest.digest()
-      return hashValue
+      return hashvalue
   }
   public fun sha1b(password: String): Array<Byte> {
       // ruleid: use-of-sha1
