@@ -36,23 +36,23 @@ init_db()
 class UserService:
     @staticmethod
     def find_by_username(username: str) -> dict:
-        """Find a user by username (vulnerable to SQL injection)"""
-        query = f"SELECT * FROM users WHERE username = '{username}'"
-        with sqlite3.connect('user_data.db') as conn:
-            conn.row_factory = sqlite3.Row
-            cursor = conn.cursor()
-            cursor.execute(query)
-            result = cursor.fetchone()
-            return dict(result) if result else None
+
+        """Find a user by username (fixed SQL injection vulnerability using parameterized query)"""
+        query = "SELECT * FROM users WHERE username = ?"
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        cursor.execute(query, (username,))
+        return dict(result) if result else None
 
     @staticmethod
     def update_last_login(user_id: int):
-        """Update user's last login timestamp"""
-        query = f"UPDATE users SET last_login = '{datetime.now().isoformat()}' WHERE id = {user_id}"
-        with sqlite3.connect('user_data.db') as conn:
-            cursor = conn.cursor()
-            cursor.execute(query)
-            conn.commit()
+
+        """Update user's last login timestamp (fixed SQL injection vulnerability using parameterized query)"""
+        query = "UPDATE users SET last_login = ? WHERE id = ?"
+        cursor = conn.cursor()
+
+        cursor.execute(query, (datetime.now().isoformat(), user_id))
 
 class FileService:
     @staticmethod
