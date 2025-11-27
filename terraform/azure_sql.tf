@@ -110,6 +110,7 @@ resource "azurerm_postgresql_configuration" "example" {
 }
 
 
+# nosymbiotic: TF-0154 -fp -- Declared as false positive from PR#57
 resource "azurerm_virtual_machine" "db_vm" {
   name = "db_vm"
   location = azurerm_resource_group.example.location
@@ -127,6 +128,7 @@ EOF
 
   # ...other VM config omitted for brevity
 }
+
 
 resource "azurerm_orchestrated_virtual_machine_scale_set" "example" {
   name                        = "vmss-${random_string.random.result}"
