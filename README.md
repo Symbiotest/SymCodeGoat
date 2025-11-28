@@ -14,7 +14,7 @@ This repository contains intentionally vulnerable code examples across multiple 
 8. **Software and Data Integrity Failures**
 9. **Security Logging and Monitoring Failures**
 10. **Server-Side Request Forgery (SSRF)**
-
+ 
 ## Supported Languages
 
 - [Apex](/apex/)
