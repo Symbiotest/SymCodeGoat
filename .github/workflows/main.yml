@@ -39,6 +39,6 @@ jobs:
         env:
           SYMBIOTIC_API_TOKEN: ${{ secrets.SYMBIOTIC_API_TOKEN }}
         run: |
-          symbiotic-cli ci ./ --skip-upload-results
+          symbiotic-cli ci infra ./ --skip-upload-results
 
     
