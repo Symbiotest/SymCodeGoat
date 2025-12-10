@@ -16,6 +16,8 @@ jobs:
           uses: SymbioticSec/actions/scan@v0.1.4
           with:
             api-token: ${{ secrets.SYMBIOTIC_ORGA_TOKEN }}
+            diff-scan: true
+          
 
   test-full-script:
     runs-on: ubuntu-latest
