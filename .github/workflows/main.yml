@@ -37,7 +37,7 @@ jobs:
 
       - name: Run Infra Scan
         env:
-          SYMBIOTIC_API_TOKEN: ${{ secrets.SYMBIOTIC_API_TOKEN }}
+          SYMBIOTIC_API_TOKEN: ${{ secrets.SYMBIOTIC_ORGA_TOKEN }}
         run: |
           symbiotic-cli ci infra ./ --skip-upload-results
 
