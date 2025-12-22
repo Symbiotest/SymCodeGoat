@@ -1,0 +1,246 @@
+[
+  {
+    "id": "24b799d7-b5d7-4492-9ad3-79f2f262b567",
+    "text": "Which compliance frameworks or regulations apply to your organization?",
+    "type": "multiple_choice",
+    "options": [
+      {
+        "id": "142932ae-094a-4dc4-acd9-46e8db475266",
+        "tags": [
+          "PCI-DSS"
+        ],
+        "text": "PCI-DSS",
+        "type": "predefined"
+      },
+      {
+        "id": "363dbcfb-fc07-45f3-b712-fe965fd8d57f",
+        "tags": [
+          "HIPAA"
+        ],
+        "text": "HIPAA",
+        "type": "predefined"
+      },
+      {
+        "id": "6abf2278-0162-49ab-a704-781d24da299e",
+        "tags": [
+          "SOC2"
+        ],
+        "text": "SOC 2",
+        "type": "predefined"
+      },
+      {
+        "id": "a858873e-31f7-4ec7-a904-ac365468accc",
+        "tags": [
+          "GDPR"
+        ],
+        "text": "GDPR",
+        "type": "predefined"
+      },
+      {
+        "id": "a858873e-31f7-4ec7-a905-ac365468accc",
+        "tags": [
+          "ISO27001"
+        ],
+        "text": "ISO27001",
+        "type": "predefined"
+      },
+      {
+        "id": "fc384769-2439-438e-965b-c72ee7c8e1bd",
+        "text": "Other",
+        "type": "free_form",
+        "rules": [
+          "4ee28bcb-608b-4f7b-aab1-e883896d9f40"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "86eabde7-957c-478a-9248-39f1cf210b65",
+    "text": "What industry or domain does your company operate in?",
+    "type": "single_choice",
+    "options": [
+      {
+        "id": "cc510e58-34e3-4c1d-9265-c3882c025882",
+        "tags": [
+          "FinancialServices"
+        ],
+        "text": "Financial Services",
+        "type": "predefined"
+      },
+      {
+        "id": "aebdf722-6fbf-428d-ad01-1aaddabe02ef",
+        "tags": [
+          "HealthcareLifeSciences"
+        ],
+        "text": "Healthcare & Life Sciences",
+        "type": "predefined"
+      },
+      {
+        "id": "f7d04bf8-6805-4792-8751-e271167850ea",
+        "tags": [
+          "GovernmentPublicSector"
+        ],
+        "text": "Government & Public Sector",
+        "type": "predefined"
+      },
+      {
+        "id": "8b7ff264-8008-48d4-a809-379478644c33",
+        "tags": [
+          "EnergyUtilities"
+        ],
+        "text": "Energy & Utilities",
+        "type": "predefined"
+      },
+      {
+        "id": "3e9f4c5a-8b91-4f6d-9c2e-1f2e3b4c5d6e",
+        "tags": [
+          "TelecommunicationsTechnology"
+        ],
+        "text": "Telecommunications & Technology",
+        "type": "predefined"
+      },
+      {
+        "id": "4f8e5b9a-7c82-4e5f-8d3f-2e3f4c5d6e7f",
+        "tags": [
+          "ManufacturingIndustrial"
+        ],
+        "text": "Manufacturing & Industrial",
+        "type": "predefined"
+      },
+      {
+        "id": "5d7c4a9b-6d93-4e4e-9c2e-3f4c5d6e7f8g",
+        "tags": [
+          "RetailEcommerce"
+        ],
+        "text": "Retail & E-commerce",
+        "type": "predefined"
+      },
+      {
+        "id": "6c6b3a8c-5e84-4f3d-8b1e-4c5d6e7f8g9h",
+        "tags": [
+          "TransportationLogistics"
+        ],
+        "text": "Transportation & Logistics",
+        "type": "predefined"
+      }
+    ]
+  },
+  {
+    "id": "4eedd69b-9f4b-4cf1-8627-f16d094146f9",
+    "text": "What are your primary security concerns or threat models?",
+    "type": "text",
+    "rules": [
+      "5bea8dc7-632e-4b04-8f71-4f94fa968086"
+    ]
+  },
+  {
+    "id": "a89bacff-c16d-457d-b630-617a6c2bde43",
+    "text": "Are there high-value assets or data that require extra safeguards?",
+    "type": "multiple_choice",
+    "options": [
+      {
+        "id": "92c0025f-b5b0-456c-ad8b-5a3fc7dc9680",
+        "tags": [
+          "PII"
+        ],
+        "text": "PII",
+        "type": "predefined"
+      },
+      {
+        "id": "043f4136-0900-4bd0-991d-62fa552940a3",
+        "tags": [
+          "PHI"
+        ],
+        "text": "PHI",
+        "type": "predefined"
+      },
+      {
+        "id": "6d896ba8-1947-4cb9-be7c-1fc3c27134ba",
+        "tags": [
+          "Payment"
+        ],
+        "text": "Payment data",
+        "type": "predefined"
+      },
+      {
+        "id": "ef86bfe4-19b2-4cfe-b199-43b277dd0bce",
+        "tags": [
+          "Code"
+        ],
+        "text": "Source code",
+        "type": "predefined"
+      },
+      {
+        "id": "11f8c45e-6116-48ac-90b7-4de58c9cdef3",
+        "text": "Other",
+        "type": "free_form",
+        "rules": [
+          "a54a1b9a-b87c-49af-8cda-1800c66a2050"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "c68bd1ba-e303-4462-bba6-6ff0e1f5e61d",
+    "text": "What is your organization's tolerance for security vs. developer convenience trade-offs?",
+    "type": "single_choice",
+    "options": [
+      {
+        "id": "4ffd7648-0a5d-44a9-9128-9d71bf7f26e3",
+        "tags": [
+          "Strict_security"
+        ],
+        "text": "Strict (security first, no exceptions)",
+        "type": "predefined"
+      },
+      {
+        "id": "f731ba10-831c-429b-8785-98f63e328405",
+        "tags": [
+          "Balanced_security"
+        ],
+        "text": "Balanced (security with pragmatic trade-offs)",
+        "type": "predefined"
+      },
+      {
+        "id": "f3b9c6db-f45d-477f-ac4d-18742e954949",
+        "tags": [
+          "Flexible_security"
+        ],
+        "text": "Flexible (developer productivity prioritized)",
+        "type": "predefined"
+      }
+    ]
+  },
+  {
+    "id": "d67a139a-7389-4358-900b-422083fe8852",
+    "text": "What is the skill/security awareness level of your engineering team?",
+    "type": "single_choice",
+    "options": [
+      {
+        "id": "e936e3ff-b1bd-4539-a426-6ba86cbdc432",
+        "text": "Beginner",
+        "type": "predefined"
+      },
+      {
+        "id": "384d6838-8969-4b0a-8879-7a75c552a547",
+        "text": "Intermediate",
+        "type": "predefined"
+      },
+      {
+        "id": "eb47013b-cad9-407a-9a7d-f28661506b16",
+        "text": "Advanced",
+        "type": "predefined"
+      },
+      {
+        "id": "9f5e02b3-f6c2-41e2-92a7-9ae40b272756",
+        "text": "Mixed",
+        "type": "predefined"
+      },
+      {
+        "id": "2cf4f65e-d8dd-412a-bd93-28195db6f2ab",
+        "text": "Other",
+        "type": "free_form"
+      }
+    ]
+  }
+]
