@@ -1,0 +1,44 @@
+name: Symbiotest
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+  
+jobs: 
+  test-full-action:
+      runs-on: ubuntu-latest
+  
+      steps:
+        - uses: actions/checkout@v4
+  
+        - name: Scan
+          uses: SymbioticSec/actions/scan@v0.3.0
+          with:
+            api-token: ${{ secrets.SYMBIOTIC_ORGA_TOKEN }}
+            diff-scan: true
+          
+
+  test-full-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Symbiotic CLI
+        run: |
+          curl -sSL https://github.com/SymbioticSec/cli/releases/latest/download/install.sh | bash
+          echo 'export PATH="$HOME/.local/bin:$PATH"' >> $GITHUB_ENV
+
+      - name: Run Infra Scan
+        env:
+          SYMBIOTIC_API_TOKEN: ${{ secrets.SYMBIOTIC_ORGA_TOKEN }}
+        run: |
+          symbiotic-cli ci infra ./ --skip-upload-results
+
+    

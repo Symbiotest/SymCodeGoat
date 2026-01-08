@@ -1,0 +1,8 @@
+blocking: 
+  severity_threshold: medium
+
+ignored: 
+  vulnerabilities : 
+    - TF-0285
+    - SYM_JSTS_0102
+  
