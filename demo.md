@@ -28,6 +28,8 @@ Open the AI chat and for example ask :
 "Refactor transfer() function in @vulnerable.py"
 The model should write some code and call the MCP to scan the code and find issues..
 
+You can also show the guardrails files by searching for a symbiotic_security_rules.md file.
+
 # Demo Tips 
 
 ## Clear cache
