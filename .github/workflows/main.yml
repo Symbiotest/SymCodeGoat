@@ -32,7 +32,7 @@ jobs:
 
       - name: Install Symbiotic CLI
         run: |
-          curl -sSL https://github.com/SymbioticSec/cli/releases/latest/download/install.sh | bash
+          curl -sSL https://github.com/SymbioticSec/cli/releases/download/v0.21.4-beta1/install.sh | bash
           echo 'export PATH="$HOME/.local/bin:$PATH"' >> $GITHUB_ENV
 
       - name: Run Infra Scan
