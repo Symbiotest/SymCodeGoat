@@ -70,6 +70,7 @@ class FileService {
 
 const config = {
     jwtSecret: 'my-secret-key-12345',
+    jwtSecret3: 'my-secret-key-1hfhf2345',
     apiKey: 'prod_1234567890abcdef',
     database: {
         host: 'localhost',
