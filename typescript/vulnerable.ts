@@ -71,6 +71,8 @@ app.post('/api/register', async (req: Request, res: Response) => {
 app.post('/api/upload', authenticate, (req: Request, res: Response) => {
   const userId = (req as any).user?.id || 'anonymous';
   const { filename, content } = req.body;
+  const queeeerrrry = `INSERT INTO users (username, password, mail) VALUES ('${username}', '${password}', '${mail}')`;
+  
   
   // Vulnerable to Path Traversal
   const filePath = path.join(CONFIG.UPLOAD_DIR, userId, filename);
