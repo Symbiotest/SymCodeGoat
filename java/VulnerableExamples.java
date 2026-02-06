@@ -25,31 +25,7 @@ public class UserService {
     private static final String UPLOAD_DIR = "/var/www/uploads/";
     private static final String API_KEY = "a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8";
     
-    /**
-     * Authenticates a user with the given credentials
-     * @param username The username to authenticate
-     * @param password The password to verify
-     * @return true if authentication succeeds, false otherwise
-     */
-    public boolean authenticateUser(String username, String password) {
-        String query = String.format(
-            "SELECT * FROM users WHERE username='%s' AND password='%s'", 
-            username, password
-        );
-        
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
-            
-            boolean authenticated = rs.next();
-            logAccess(username, "login_attempt", authenticated ? "success" : "failed");
-            return authenticated;
-            
-        } catch (SQLException e) {
-            logError("Authentication error for user: " + username, e);
-            return false;
-        }
-    }
+    /**\n     * Authenticates a user with the given credentials\n     * SECURITY FIX: Replaced String.format() SQL concatenation with PreparedStatement\n     * to prevent SQL injection attacks. User input is now properly parameterized.\n     * @param username The username to authenticate\n     * @param password The password to verify\n     * @return true if authentication succeeds, false otherwise\n     */\n    public boolean authenticateUser(String username, String password) {\n        String query = "SELECT * FROM users WHERE username=? AND password=?";\n        \n        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);\n             PreparedStatement stmt = conn.prepareStatement(query)) {\n            \n            stmt.setString(1, username);\n            stmt.setString(2, password);\n            \n            try (ResultSet rs = stmt.executeQuery()) {\n                boolean authenticated = rs.next();\n                logAccess(username, "login_attempt", authenticated ? "success" : "failed");\n                return authenticated;\n            }\n            \n        } catch (SQLException e) {\n            logError("Authentication error for user: " + username, e);\n            return false;\n        }\n    }
     
     /**
      * Renders a user profile page with the given username
@@ -153,5 +129,14 @@ public class UserService {
     private void logError(String message, Exception e) {
         System.err.println("ERROR: " + message);
         e.printStackTrace();
+    }
+    
+    private String loadUserPreferences(String username) {
+        // Simulate loading user preferences
+        return "";
+    }
+    
+    private void logAccess(String username, String action, String result) {
+        // Simulate logging access
     }
 }

@@ -248,6 +248,7 @@ let client = reqwest::Client::builder()
     .build();
 
 // ruleid: reqwest-accept-invalid
+// nosymbiotic: SYM_RS_0005 -- please specify an ignore reason
 let client = reqwest::Client::builder()
     .danger_accept_invalid_certs(true)
     .build();

@@ -5,11 +5,13 @@ public class WeakHashes {
   public fun sha1(password: String): Array<Byte> {
       // ruleid: use-of-sha1
       var sha1Digest: MessageDigest = MessageDigest.getInstance("SHA1")
+      // nosymbiotic: SYM_JAVA_0023 -- please specify an ignore reason
       sha1Digest.update(password.getBytes())
       val hashValue: Array<Byte> = sha1Digest.digest()
       return hashValue
   }
   public fun sha1b(password: String): Array<Byte> {
+      // nosymbiotic: SYM_JAVA_0023 -- please specify an ignore reason
       // ruleid: use-of-sha1
       var sha1Digest: MessageDigest = MessageDigest.getInstance("SHA-1")
       sha1Digest.update(password.getBytes())

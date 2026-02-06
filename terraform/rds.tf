@@ -17,6 +17,22 @@ resource "aws_rds_cluster" "app1-rds-cluster" { # nosymbiotic: TF-0212 -- please
   }
 }
 
+resource "aws_rds_cluster" "app2-rds-clusddter" {
+  cluster_identifier      = "app2-rds-cluster"
+  allocated_storage       = 10
+  backup_retention_period = 4
+  tags = {
+    git_commit           = "079fe74f6b96d887c245664fbd8cf676c92f20e5"
+    git_file             = "terraform/aws/rds.tf"
+    git_last_modified_at = "2021-12-08 23:26:32"
+    git_last_modified_by = "tron47@gmail.com"
+    git_modifiers        = "tron47"
+    git_org              = "matansha"
+    git_repo             = "terragoat"
+    yor_trace            = "d33c9292-952b-4c1f-9973-b6dbad519461"
+  }
+}
+
 resource "aws_rds_cluster" "app2-rds-cluster" {
   cluster_identifier      = "app2-rds-cluster"
   allocated_storage       = 10
@@ -32,6 +48,7 @@ resource "aws_rds_cluster" "app2-rds-cluster" {
     yor_trace            = "d33c9292-952b-4c1f-9973-b6dbad519461"
   }
 }
+
 
 resource "aws_rds_cluster" "app3-rds-cluster" {
   cluster_identifier      = "app3-rds-cluster"
