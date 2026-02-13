@@ -24,7 +24,7 @@ jobs:
             diff-scan: true
           
 
-  test-full-script:
+  test-full-script-old:
     runs-on: ubuntu-latest
 
     steps:
@@ -35,10 +35,27 @@ jobs:
           curl -sSL https://github.com/SymbioticSec/cli/releases/latest/download/install.sh | bash
           echo 'export PATH="$HOME/.local/bin:$PATH"' >> $GITHUB_ENV
 
-      - name: Run Infra Scan
+      - name: Run Code Scan
         env:
           SYMBIOTIC_API_TOKEN: ${{ secrets.SYMBIOTIC_ORGA_TOKEN }}
         run: |
-          symbiotic-cli ci infra ./ --skip-upload-results
+          symbiotic-cli ci code ./ --skip-upload-results
+
+  test-full-script-new:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Symbiotic CLI
+        run: |
+          curl -sSL https://github.com/SymbioticSec/cli/releases/download/v0.21.4-beta1/install.sh | bash
+          echo 'export PATH="$HOME/.local/bin:$PATH"' >> $GITHUB_ENV
+
+      - name: Run Code Scan
+        env:
+          SYMBIOTIC_API_TOKEN: ${{ secrets.SYMBIOTIC_ORGA_TOKEN }}
+        run: |
+          symbiotic-cli ci code ./ --skip-upload-results
 
     
