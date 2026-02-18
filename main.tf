@@ -248,6 +248,14 @@ resource "aws_s3_bucket" "assets_bucket" {
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "assets_bucket" {
+  bucket = aws_s3_bucket.assets_bucket.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
 # S3 bucket for CloudTrail-like public logging (vulnerability 2: public log access)
 resource "aws_s3_bucket" "cloudtrail_bucket_public" {
   bucket = var.cloudtrail_bucket_name
@@ -377,7 +385,7 @@ resource "aws_iam_instance_profile" "ec2_profile" {
 # Outputs
 
 
-resource "aws_security_group" "web_sg3" {
+resource "aws_security_group" "web_sg34" {
   name   = "enterprise-web-app-sg"
   vpc_id = aws_vpc.enterprise_vpc_production.id
 
@@ -393,6 +401,28 @@ resource "aws_security_group" "web_sg3" {
 
   tags = {
     Name        = "enterprise-web-app-sg"
+    Environment = "production"
+  }
+}
+
+resource "aws_s3_bucket" "assets_bucket" {
+  bucket = var.assets_bucket_name
+  acl    = "private"
+
+  versioning {
+    enabled = true
+  }
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+
+  tags = {
+    Name        = "enterprise-web-assets-prod"
     Environment = "production"
   }
 }
