@@ -35,12 +35,10 @@ resource "azurerm_mssql_server_security_alert_policy" "example" {
   state                      = "Enabled"
   storage_endpoint           = azurerm_storage_account.example.primary_blob_endpoint
   storage_account_access_key = azurerm_storage_account.example.primary_access_key
-  disabled_alerts = [
-    "Sql_Injection",
-    "Data_Exfiltration"
-  ]
-  retention_days = 20
+  disabled_alerts            = []
+  retention_days             = 1
 }
+
 
 resource "azurerm_mysql_server" "example" {
   name                = "terragoat-mysql-${var.environment}${random_integer.rnd_int.result}"
@@ -104,6 +102,12 @@ resource "azurerm_postgresql_configuration" "thrtottling_config" {
 }
 
 resource "azurerm_postgresql_configuration" "example" {
+  name                = "log_checkpoints"
+  resource_group_name = azurerm_resource_group.example.name
+  server_name         = azurerm_postgresql_server.example.name
+  value               = "off"
+}
+resource "azurerm_postgresql_configuration" "example2" {
   name                = "log_checkpoints"
   resource_group_name = azurerm_resource_group.example.name
   server_name         = azurerm_postgresql_server.example.name

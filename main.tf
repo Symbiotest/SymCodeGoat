@@ -267,6 +267,14 @@ resource "aws_s3_bucket" "cloudtrail_bucket_public" {
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "cloudtrail_bucket_public" {
+  bucket = aws_s3_bucket.cloudtrail_bucket_public.id
+
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
+}
 # EC2 – Web App Tier
 resource "aws_instance" "web_app" {
   count             = 3
