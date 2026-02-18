@@ -375,3 +375,24 @@ resource "aws_iam_instance_profile" "ec2_profile" {
 }
 
 # Outputs
+
+
+resource "aws_security_group" "web_sg3" {
+  name   = "enterprise-web-app-sg"
+  vpc_id = aws_vpc.enterprise_vpc_production.id
+
+  # Vulnerability: intentionally left description empty to demonstrate misconfig
+  description = ""
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name        = "enterprise-web-app-sg"
+    Environment = "production"
+  }
+}
