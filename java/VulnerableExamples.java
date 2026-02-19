@@ -32,18 +32,19 @@ public class UserService {
      * @return true if authentication succeeds, false otherwise
      */
     public boolean authenticateUser(String username, String password) {
-        String query = String.format(
-            "SELECT * FROM users WHERE username='%s' AND password='%s'", 
-            username, password
-        );
+        String query = "SELECT * FROM users WHERE username=? AND password=?";
         
         try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(query)) {
+             PreparedStatement stmt = conn.prepareStatement(query)) {
             
-            boolean authenticated = rs.next();
-            logAccess(username, "login_attempt", authenticated ? "success" : "failed");
-            return authenticated;
+            stmt.setString(1, username);
+            stmt.setString(2, password);
+            
+            try (ResultSet rs = stmt.executeQuery()) {
+                boolean authenticated = rs.next();
+                logAccess(username, "login_attempt", authenticated ? "success" : "failed");
+                return authenticated;
+            }
             
         } catch (SQLException e) {
             logError("Authentication error for user: " + username, e);
