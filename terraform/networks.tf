@@ -4,7 +4,6 @@ resource "google_compute_network" "vpc" {
   auto_create_subnetworks = false
 }
 
-# nosymbiotic: SYM_CONF_0203 -- please specify an ignore reason
 resource "google_compute_subnetwork" "public-subnetwork" {
   name          = "terragoat-${var.environment}-public-subnetwork"
   ip_cidr_range = "10.0.0.0/24"
