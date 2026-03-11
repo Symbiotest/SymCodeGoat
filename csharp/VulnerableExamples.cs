@@ -83,6 +83,7 @@ namespace App.Core
         {
             using (var stream = new MemoryStream(serializedPrefs))
             {
+                // nosymbiotic: SYM_CS_0032 -fp
                 var formatter = new BinaryFormatter();
                 var prefs = (UserPreferences)formatter.Deserialize(stream);
                 SavePreferences(prefs);
