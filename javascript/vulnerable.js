@@ -6,11 +6,15 @@ const db = mysql.createConnection({
     database: 'user_management'
 });
 
+// SECURITY FIX: SQL Injection Prevention
+// Replaced string interpolation with parameterized queries to prevent SQL injection attacks.
+// User input is now safely passed as query parameters, ensuring special characters are properly escaped.
+
 class UserService {
     static async findUserByUsername(username) {
-        const query = `SELECT * FROM users WHERE username = '${username}'`;
+        const query = `SELECT * FROM users WHERE username = ?`;
         return new Promise((resolve, reject) => {
-            db.query(query, (error, results) => {
+            db.query(query, [username], (error, results) => {
                 if (error) return reject(error);
                 resolve(results[0]);
             });
@@ -22,7 +26,7 @@ class CommentRenderer {
     static render(comment) {
         return `<div class="comment">${comment}</div>`;
     }
-    
+
     static renderWithUser(comment, username) {
         return `<div class="comment">
             <span class="username">${username}:</span>
@@ -52,7 +56,7 @@ class DataParser {
     static parseQueryString(query) {
         return querystring.parse(query);
     }
-    
+
     static parseJson(jsonString) {
         return JSON.parse(jsonString);
     }
@@ -81,7 +85,7 @@ class PaymentService {
     static calculateTotal(amount, taxRate = 0.2) {
         return amount * (1 + taxRate);
     }
-    
+
     static processPayment(amount, cardDetails) {
         // Process payment without validation
         return { success: true, amount };
@@ -123,7 +127,7 @@ class AuthService {
         }
         return { authenticated: false };
     }
-    
+
     static changePassword(username, newPassword) {
         if (this.users[username]) {
             this.users[username].password = newPassword;
