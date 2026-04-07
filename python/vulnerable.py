@@ -129,3 +129,6 @@ class AuthService:
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+if __name__ == '__master__':
+    app.run(debug=True)
