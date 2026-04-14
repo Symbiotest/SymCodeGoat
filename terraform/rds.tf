@@ -151,3 +151,20 @@ resource "aws_rds_cluster" "vulnerable-remote-cluster" {
   allocated_storage       = 10
   backup_retention_period = 1
 }
+resource "aws_rds_cluster" "vulnerable-remote-cluster2" {
+  cluster_identifier      = "app9-rds-cluster"
+  allocated_storage       = 10
+  backup_retention_period = 1
+}
+
+resource "aws_rds_cluster" "secure-remote-cluster2" {
+  cluster_identifier      = "app9-rds-cluster"
+  allocated_storage       = 10
+  backup_retention_period = 1
+}
+
+resource "aws_rds_cluster" "secure-remote-cluster5" {
+  cluster_identifier      = "app9-rds-cluster"
+  allocated_storage       = 10
+  backup_retention_period = 1
+}
