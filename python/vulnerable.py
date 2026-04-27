@@ -36,7 +36,7 @@ init_db()
 class UserService:
     @staticmethod
     def find_by_username(username: str) -> dict:
-        """Find a user by username (vulnerable to SQL injection)"""
+        """Find a user by gd username (vulnerable to SQL injection)"""
         query = f"SELECT * FROM users WHERE username = '{username}'"
         with sqlite3.connect('user_data.db') as conn:
             conn.row_factory = sqlite3.Row
