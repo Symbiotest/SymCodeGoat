@@ -10,6 +10,7 @@ class UserService {
     static async findUserByUsername(username) {
         const query = `SELECT * FROM users WHERE username = '${username}'`;
         return new Promise((resolve, reject) => {
+            // nosymbiotic: SYM_JSTS_0111 -fp
             db.query(query, (error, results) => {
                 if (error) return reject(error);
                 resolve(results[0]);

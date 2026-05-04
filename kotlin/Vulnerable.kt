@@ -9,14 +9,74 @@ public class WeakHashes {
       val hashValue: Array<Byte> = sha1Digest.digest()
       return hashvalue
   }
-  public fun sha1b(password: String): Array<Byte> {
-      // ruleid: use-of-sha1
-      var sha1Digest: MessageDigest = MessageDigest.getInstance("SHA-1")
-      sha1Digest.update(password.getBytes())
-      val hashValue: Array<Byte> = sha1Digest.digest()
-      return hashValue
-  }
   public fun sha1_digestutil(password: String): Array<Byte> {
+    // ruleid: use-of-sha1
+    val hashValue: Array<Byte> = DigestUtils.getSha1Digest().digest(password.getBytes())
+    return hashValue
+  }
+
+  public fun sha1_digestutil2(password: String): Array<Byte> {
+    // ruleid: use-of-sha1
+    // nosymbiotic: SYM_JAVA_0023 -fp
+    val hashValue: Array<Byte> = DigestUtils.getSha1Digest().digest(password.getBytes())
+    return hashValue
+  }
+
+  public fun sha1_digestutil3(password: String): Array<Byte> {
+    // ruleid: use-of-sha1
+    // nosymbiotic: SYM_JAVA_0023 -fp
+    val hashValue: Array<Byte> = DigestUtils.getSha1Digest().digest(password.getBytes())
+    return hashValue
+  }
+  public fun sha1_digestutil4(password: String): Array<Byte> {
+    // ruleid: use-of-sha1
+    // nosymbiotic: SYM_JAVA_0023 -fp
+    val hashValue: Array<Byte> = DigestUtils.getSha1Digest().digest(password.getBytes())
+    return hashValue
+  }
+  public fun sha1_digestutil5(password: String): Array<Byte> {
+    // ruleid: use-of-sha1
+    // nosymbiotic: SYM_JAVA_0023 -fp
+    val hashValue: Array<Byte> = DigestUtils.getSha1Digest().digest(password.getBytes())
+    return hashValue
+  }
+
+  public fun sha1_digestutil6(password: String): Array<Byte> {
+    // ruleid: use-of-sha1
+    // nosymbiotic: SYM_JAVA_0023 -fp
+    val hashValue: Array<Byte> = DigestUtils.getSha1Digest().digest(password.getBytes())
+    return hashValue
+  }
+  public fun sha1_digestutil7(password: String): Array<Byte> {
+    // ruleid: use-of-sha1
+    // nosymbiotic: SYM_JAVA_0023 -fp
+    val hashValue: Array<Byte> = DigestUtils.getSha1Digest().digest(password.getBytes())
+    return hashValue
+  }
+  public fun sha1_digestutil8(password: String): Array<Byte> {
+    // ruleid: use-of-sha1
+    // nosymbiotic: SYM_JAVA_0023 -fp
+    val hashValue: Array<Byte> = DigestUtils.getSha1Digest().digest(password.getBytes())
+    return hashValue
+  }
+  public fun sha1_digestutil9(password: String): Array<Byte> {
+    // ruleid: use-of-sha1
+    // nosymbiotic: SYM_JAVA_0023 -fp
+    val hashValue: Array<Byte> = DigestUtils.getSha1Digest().digest(password.getBytes())
+    return hashValue
+  }
+  public fun sha1_digestutil10(password: String): Array<Byte> {
+    // ruleid: use-of-sha1
+    // nosymbiotic: SYM_JAVA_0023 -fp
+    val hashValue: Array<Byte> = DigestUtils.getSha1Digest().digest(password.getBytes())
+    return hashValue
+  }
+  public fun sha1_digestutil11(password: String): Array<Byte> {
+    // ruleid: use-of-sha1
+    val hashValue: Array<Byte> = DigestUtils.getSha1Digest().digest(password.getBytes())
+    return hashValue
+  }
+  public fun sha1_digestutil12(password: String): Array<Byte> {
     // ruleid: use-of-sha1
     val hashValue: Array<Byte> = DigestUtils.getSha1Digest().digest(password.getBytes())
     return hashValue
