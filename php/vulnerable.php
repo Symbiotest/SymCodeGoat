@@ -124,6 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 <?php if ($user): ?>
                     <h2>Your Profile</h2>
                     // nosymbiotic: SYM_PHP_0041 -ignore-educational-example
+                    // nosymbiotic: SYM_PHP_0041 -- please specify an ignore reason
                     <p>Email: <?php echo $user['email']; ?></p>
                     <p>Member since: <?php echo $user['join_date']; ?></p>
                     
