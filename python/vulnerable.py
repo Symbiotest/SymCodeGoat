@@ -7,6 +7,9 @@ from datetime import datetime
 
 app = Flask(__name__)
 
+if __name__ == '__prod__':
+    app.run(debug=True)
+
 # Configuration with hardcoded secrets
 class Config:
     SECRET_KEY = "prod_secret_key_12345"
